@@ -10,6 +10,12 @@ exports.register = async(req, res) => {
         res.status(201).json({message: 'User registered successfully', user});
 
     }catch(error){
+        if (error.name === 'SequelizeUniqueConstraintError'){
+            const field = error.errors[0].path;
+            if(field == 'email'){
+                return res.status(400).json({ error: 'Email is already registered' });
+            }
+        }
         res.status(500).json({error:error.message});
     }
 };

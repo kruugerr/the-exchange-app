@@ -8,6 +8,7 @@ const RegisterScreen = ({ navigation }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -38,12 +39,20 @@ const RegisterScreen = ({ navigation }) => {
 
         console.log('Register Response:', res.data);
 
+        setEmailError('');
         navigation.navigate('Login');
     } catch (error) {
         if (error.response) {
             console.log('Error Response:', error.response.data);
+
+            if(error.response.data.error === 'Email is already registered'){
+              setEmailError('Email is already in use.');
+            } //else{
+              //setEmailError('An error occured. Please try again.');
+            //}
         } else {
             console.log('Error Message:', error.message);
+            //setEmailError('Network error. Please try again.');
         }
     }
 };
@@ -68,8 +77,16 @@ const RegisterScreen = ({ navigation }) => {
         style={styles.input}
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(text) => {
+          setEmail(text);
+          setEmailError('');
+        }}
       />
+
+      {emailError !== '' && (
+        <Text style={styles.errorText}>{emailError}</Text>
+      )}
+
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -111,6 +128,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize:16,
   },
+  errorText: {
+    color: '#D8000C',   // Red color for error
+    fontSize: 14,
+    alignSelf: 'flex-start',
+    marginLeft: '4%',
+    marginBottom: 10,
+},
   button:{
     backgroundColor:'#0d4f4f',
     padding:15,
