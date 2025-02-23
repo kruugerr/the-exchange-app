@@ -1,6 +1,6 @@
 // src/screens/RegisterScreen.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import axios from 'axios';
 
 const RegisterScreen = ({ navigation }) => {
@@ -8,6 +8,24 @@ const RegisterScreen = ({ navigation }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 0.95,
+      duration:100, 
+      useNativeDriver:true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const handleRegister = async () => {
     try {
@@ -18,17 +36,14 @@ const RegisterScreen = ({ navigation }) => {
             password,
         });
 
-        Alert.alert('Success', 'Registration Successful');
         console.log('Register Response:', res.data);
 
         navigation.navigate('Login');
     } catch (error) {
         if (error.response) {
             console.log('Error Response:', error.response.data);
-            Alert.alert('Error', error.response.data.error);
         } else {
             console.log('Error Message:', error.message);
-            Alert.alert('Error', 'Network Error');
         }
     }
 };
@@ -36,7 +51,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.title}>Exchange</Text>
       <TextInput
         style={styles.input}
         placeholder="First Name"
@@ -62,11 +77,14 @@ const RegisterScreen = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Register" onPress={handleRegister} />
-      <Button
-        title="Already have an account? Login"
-        onPress={() => navigation.navigate('Login')}
-      />
+      <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handleRegister}>
+        <Animated.View style={[styles.button, {transform: [{scale: scaleAnim}]}]}>
+          <Text style={styles.buttonText}>Register</Text>
+        </Animated.View>
+      </TouchableWithoutFeedback>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.link}>Already have an account? Login.</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -75,19 +93,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    alignItems:'center',
+    backgroundColor:'#F5CC8D',
+    padding:20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 56,
+    color:'#01204E',
+    fontFamily:'SuperMagic',
     marginBottom: 20,
-    textAlign: 'center',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
+    width: '92%',
+    backgroundColor:'#fff',
+    padding:15,
+    borderRadius:10,
+    marginBottom: 15,
+    fontSize:16,
+  },
+  button:{
+    backgroundColor:'#0d4f4f',
+    padding:15,
+    borderRadius:10,
+    width:'92%',
+    alignItems:'center',
+    marginBottom:20,
+  },
+  buttonText:{
+    color:'#FAA968',
+    fontSize:24,
+    fontWeight:'bold',
+    fontFamily:'SuperMagic',
+  },
+  link:{
+    color:'#000',
+    fontSize:14,
+    textDecorationLine: 'underline'
   },
 });
 
