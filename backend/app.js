@@ -30,7 +30,7 @@ app.use((err, req, res, next) => {
 });
 
 // Sync database and start server
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 sequelize.sync() // Sync Sequelize models with the database
     .then(() => {
         app.listen(PORT, () => {
