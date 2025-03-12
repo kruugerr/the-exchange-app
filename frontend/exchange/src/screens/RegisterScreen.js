@@ -1,6 +1,6 @@
 // src/screens/RegisterScreen.js
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet, Keyboard } from 'react-native';
 import axios from 'axios';
 
 const RegisterScreen = ({ navigation }) => {
@@ -59,50 +59,52 @@ const RegisterScreen = ({ navigation }) => {
 
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Exchange</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={setFirstName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => {
-          setEmail(text);
-          setEmailError('');
-        }}
-      />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Exchange</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            setEmailError('');
+          }}
+        />
 
-      {emailError !== '' && (
-        <Text style={styles.errorText}>{emailError}</Text>
-      )}
+        {emailError !== '' && (
+          <Text style={styles.errorText}>{emailError}</Text>
+        )}
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handleRegister}>
-        <Animated.View style={[styles.button, {transform: [{scale: scaleAnim}]}]}>
-          <Text style={styles.buttonText}>Register</Text>
-        </Animated.View>
-      </TouchableWithoutFeedback>
-      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.linkContainer}>
-        <Text style={styles.link}>Already have an account? Login.</Text>
-      </TouchableOpacity>
-    </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handleRegister}>
+          <Animated.View style={[styles.button, {transform: [{scale: scaleAnim}]}]}>
+            <Text style={styles.buttonText}>Register</Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.linkContainer}>
+          <Text style={styles.link}>Already have an account? Login.</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

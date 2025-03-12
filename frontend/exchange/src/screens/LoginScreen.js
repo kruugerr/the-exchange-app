@@ -1,6 +1,6 @@
 // src/screens/LoginScreen.js
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet, Keyboard } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = ({ navigation }) => {
@@ -43,38 +43,40 @@ const LoginScreen = ({ navigation }) => {
 };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Exchange</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Exchange</Text>
 
-      <TextInput 
-        style={styles.input}
-        placeholder='Email'
-        value={email}
-        onChangeText={setEmail}
-        keyboardType='email-address'
-        autoCapitalize='none'
-      />
+        <TextInput 
+          style={styles.input}
+          placeholder='Email'
+          value={email}
+          onChangeText={setEmail}
+          keyboardType='email-address'
+          autoCapitalize='none'
+        />
 
-      <TextInput 
-        style={styles.input}
-        placeholder='Password'
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        autoCapitalize='none'
-      />
+        <TextInput 
+          style={styles.input}
+          placeholder='Password'
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          autoCapitalize='none'
+        />
 
-      <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handleLogin}>
-        <Animated.View style={[styles.button, {transform: [{scale: scaleAnim}]}]}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Animated.View>
-      </TouchableWithoutFeedback>
-      
-      <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.linkContainer}>
-        <Text style={styles.link}>Create new account</Text>
-      </TouchableOpacity>
+        <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handleLogin}>
+          <Animated.View style={[styles.button, {transform: [{scale: scaleAnim}]}]}>
+            <Text style={styles.buttonText}>Login</Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
 
-    </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.linkContainer}>
+          <Text style={styles.link}>Create new account</Text>
+        </TouchableOpacity>
+
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
