@@ -69,10 +69,11 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Login</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+      
+      <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.linkContainer}>
         <Text style={styles.link}>Create new account</Text>
       </TouchableOpacity>
+
     </View>
   );
 };
@@ -113,10 +114,22 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     fontFamily:'SuperMagic',
   },
-  link:{
+  linkContainer: {
+    position: 'absolute',
+    bottom: 30,
+    width: '95%',
+    alignItems: 'center',
+    padding: 15,
+    borderRadius: 20,
+    borderWidth: 2, 
+    borderColor: 'black',
+    backgroundColor: 'transparent',
+  },
+  linkText:{
     color:'#000',
-    fontSize:14,
-    textDecorationLine: 'underline'
+    fontSize:16,
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
 });
 

@@ -99,7 +99,7 @@ const RegisterScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Register</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.linkContainer}>
         <Text style={styles.link}>Already have an account? Login.</Text>
       </TouchableOpacity>
     </View>
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems:'center',
     backgroundColor:'#F5CC8D',
-    padding:20,
+    paddingLeft:20,
+    paddingRight:20,
   },
   title: {
     fontSize: 56,
@@ -121,11 +122,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: '92%',
+    width: '95%',
     backgroundColor:'#fff',
-    padding:15,
-    borderRadius:10,
-    marginBottom: 15,
+    paddingHorizontal:15,
+    paddingVertical:12,
+    borderRadius:20,
+    marginBottom: 12,
     fontSize:16,
   },
   errorText: {
@@ -137,9 +139,9 @@ const styles = StyleSheet.create({
 },
   button:{
     backgroundColor:'#0d4f4f',
-    padding:15,
-    borderRadius:10,
-    width:'92%',
+    padding:20,
+    borderRadius:20,
+    width:'95%',
     alignItems:'center',
     marginBottom:20,
   },
@@ -149,10 +151,22 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     fontFamily:'SuperMagic',
   },
-  link:{
+  linkContainer: {
+    position: 'absolute',
+    bottom: 30,
+    width: '95%',
+    alignItems: 'center',
+    padding: 15,
+    borderRadius: 20,
+    borderWidth: 2, 
+    borderColor: 'black',
+    backgroundColor: 'transparent',
+  },
+  linkText:{
     color:'#000',
-    fontSize:14,
-    textDecorationLine: 'underline'
+    fontSize:16,
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
 });
 
