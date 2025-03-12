@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet, Keyboard } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -31,7 +32,17 @@ const LoginScreen = ({ navigation }) => {
             email,
             password,
         });
-        console.log('Login Response:', res.data);
+
+        const token = res.data.token
+
+        console.log('Login Sucessful:', res.data);
+
+        await AsyncStorage.setItem('userToken', token);
+
+        navigation.reset({
+          index:0,
+          routes:[{name:"MainFeed"}],
+        });
 
     } catch (error) {
         if (error.response) {
@@ -74,7 +85,6 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.linkContainer}>
           <Text style={styles.link}>Create new account</Text>
         </TouchableOpacity>
-
       </View>
     </TouchableWithoutFeedback>
   );
