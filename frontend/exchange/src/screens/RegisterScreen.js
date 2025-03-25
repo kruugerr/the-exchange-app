@@ -1,7 +1,9 @@
 // src/screens/RegisterScreen.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet, Keyboard } from 'react-native';
-import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import API from '../api/api';
+import { AuthContext} from '../navigation/AuthContext';
 
 const RegisterScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState('');
@@ -11,6 +13,8 @@ const RegisterScreen = ({ navigation }) => {
   const [emailError, setEmailError] = useState('');
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const { login } = useContext(AuthContext);
 
   const handlePressIn = () => {
     Animated.timing(scaleAnim, {
@@ -30,29 +34,27 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-        const res = await axios.post('http://172.20.10.2:5002/api/auth/register', {
-            first_name: firstName,
-            last_name: lastName,
-            email,
-            password,
-        });
 
-        console.log('Register Response:', res.data);
+        const res = await API.post('/auth/register', { first_name: firstName, last_name: lastName, email, password });
+
+        const token = res.data.token;
+
+        await AsyncStorage.setItem('userToken', token);
+        login(token);
+
+        console.log('Register Succesful:', res.data);
 
         setEmailError('');
-        navigation.navigate('Login');
+
     } catch (error) {
         if (error.response) {
             console.log('Error Response:', error.response.data);
 
             if(error.response.data.error === 'Email is already registered'){
               setEmailError('Email is already in use.');
-            } //else{
-              //setEmailError('An error occured. Please try again.');
-            //}
+            }
         } else {
             console.log('Error Message:', error.message);
-            //setEmailError('Network error. Please try again.');
         }
     }
 };

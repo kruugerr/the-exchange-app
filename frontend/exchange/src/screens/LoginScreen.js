@@ -1,14 +1,15 @@
-// src/screens/LoginScreen.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Animated, StyleSheet, Keyboard } from 'react-native';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../navigation/AuthContext';
+import API from '../api/api';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const { login } = useContext(AuthContext);
 
   const handlePressIn = () => {
     Animated.timing(scaleAnim, {
@@ -28,21 +29,13 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-        const res = await axios.post('http://172.20.10.2:5002/api/auth/login', {
-            email,
-            password,
-        });
+        const res = await API.post('/auth/login', { email, password });
 
         const token = res.data.token
-
         console.log('Login Sucessful:', res.data);
 
-        await AsyncStorage.setItem('userToken', token);
-
-        navigation.reset({
-          index:0,
-          routes:[{name:"MainFeed"}],
-        });
+        await AsyncStorage.setItem('userToken', token); // Persist login
+        login(token);
 
     } catch (error) {
         if (error.response) {
