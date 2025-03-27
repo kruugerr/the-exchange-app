@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const sequelize = require('./config/db'); // Database connection
 const authRoutes = require('./routes/auth.routes'); // Authentication routes
+const exchangeRoutes = require('./routes/exchange.routes'); // Exchange routes
 
 // Load environment variables
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json()); // Parse JSON request bodies
 
 // Routes
 app.use('/api/auth', authRoutes); // Authentication routes
+app.use('/api/exchanges', exchangeRoutes); // Exchange routes
 
 // Test route
 app.get('/', (req, res) => {
